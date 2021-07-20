@@ -115,18 +115,28 @@ where sanpham.gia in (select sanpham.gia from sanpham order by sanpham.gia desc 
 -- 32 tổng sane phẩm giá <32
 select count(sanpham.gia) as"tổng sản phẩm" from sanpham where sanpham.gia > 300;
 
--- 33 tổng sản phẩm theo từng giáalter
+-- 33 tổng sản phẩm theo từng giá
 select  sanpham.gia ,count(sanpham.gia) as " số lượng"
 from sanpham
 group by sanpham.gia;
 
--- 34x sản phẩm giá bán cao nhất, thấp nhất, trung bình của sản phẩm bắt đầu bằng chữ M
-select max(sanpham.gia), min( sanpham.gia), avg(sanpham.gia) 
-from (select sanpham.gia from sanpham where sanpham.tensp like "M%");
+-- 34 sản phẩm giá bán cao nhất, thấp nhất, trung bình của sản phẩm bắt đầu bằng chữ M
+select max(sanpham.gia), min( sanpham.gia), avg(sanpham.gia), sanpham.tensp
+from sanpham where sanpham.tensp like "m%" group by sanpham.tensp;
 
 -- 35 doanh thu mỗi ngày
-select sanpham.ngay, sum(sanpham.tonggia)
-from sanpham
+select hoadon.ngay, sum(hoadon.tonggia)
+from hoadon group by hoadon.ngay
+order by sum(hoadon.tonggia) desc;
+
+-- 36 tổng số lượng từng sản phẩm bán ra trong tháng 6
+
+select sum(hoadonchitiet.soluong), hoadonchitiet.idsp 
+from hoadonchitiet join hoadon on hoadon.id = hoadonchitiet.idhd
+where hoadon.ngay between "2006/6/1" and '2006/6/30'
+group by hoadonchitiet.idsp;
+
+-- 37 doanh thu bán hàng thừng tháng
 
 
 
