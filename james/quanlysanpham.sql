@@ -138,5 +138,32 @@ group by hoadonchitiet.idsp;
 
 -- 37 doanh thu bán hàng thừng tháng
 
+DROP TRIGGER IF EXISTS tonggia;
+DELIMITER $$
+CREATE TRIGGER tonggia
+before update
+ON hoadonchitiet
+FOR EACH ROW
+BEGIN
+update hoadon set tonggia = tonggia + new.soluong * (select gia from sanpham where idsp = new.idsp) where hoadon.idhd = new.idhd;
+END$$
+ DELIMITER ;
+ DELIMITER $$
+CREATE TRIGGER ngaytao
+before insert
+ON hoadon
+FOR EACH ROW
+BEGIN
+set new.ngaylap = now();
+END$$
+ DELIMITER ;
+
+
+
+
+
+
+
+
 
 
